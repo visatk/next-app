@@ -1,4 +1,5 @@
 import { sqliteTable, text, integer, primaryKey } from "drizzle-orm/sqlite-core";
+import { sql } from "drizzle-orm";
 
 // --- Better Auth Required Tables ---
 export const users = sqliteTable("user", {
@@ -62,3 +63,23 @@ export const questions = sqliteTable("question", {
   options: text("options", { mode: "json" }).notNull(), // JSON string array
   correctAnswer: text("correctAnswer").notNull(),
 });db
+
+export const wallets = sqliteTable("wallet", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  balance: integer("balance").notNull().default(0), // Stored in smallest unit (e.g., cents)
+  currency: text("currency").notNull().default("CREDITS"),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .default(sql`(strftime('%s', 'now'))`)
+    .$onUpdate(() => new Date()),
+});
+
+export const transactions = sqliteTable("transaction", {
+  id: text("id").primaryKey(),
+  walletId: text("wallet_id").notNull().references(() => wallets.id),
+  amount: integer("amount").notNull(), // Positive for deposit, negative for withdrawal
+  type: text("type").notNull(), // 'deposit', 'withdrawal', 'reward', 'purchase'
+  status: text("status").notNull().default("completed"), // 'pending', 'completed', 'failed'
+  idempotencyKey: text("idempotency_key").unique().notNull(), // Prevent double-billing
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().default(sql`(strftime('%s', 'now'))`),
+});
