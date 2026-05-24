@@ -30,25 +30,25 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "prod-d1",
-      "database_id": "<unique-ID-for-your-database>"
+      "database_name": "shop",
+      "database_id": "8e658eae-304c-45be-b494-55c568b5c353"
     },
     {
       "binding": "NEXT_TAG_CACHE_D1",
-      "database_name": "quizmint-tag-cache",
-      "database_id": "<DATABASE_ID>"
+      "database_name": "shop-cache",
+      "database_id": "ca0563a4-8e2e-4fb9-b55d-f1a8e229490e"
     }
   ],
   "kv_namespaces": [
     {
       "binding": "KV",
-      "id": "<BINDING_ID>"
+      "id": "6ac153e94a164cbaa841e8a8d80b5261"
     }
   ],
   "r2_buckets": [
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "<BUCKET_NAME>"
+      "bucket_name": "pipeline"
     }
   ],
   "durable_objects": {
