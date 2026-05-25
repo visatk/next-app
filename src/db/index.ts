@@ -1,12 +1,11 @@
-import { drizzle } from 'drizzle-orm/d1';
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import * as schema from "./schema";
+import { drizzle } from "drizzle-orm/d1";
 
-let dbInstance: ReturnType<typeof drizzle<typeof schema>> | null = null;
-
-export function getDB() {
-  if (dbInstance) return dbInstance;
-  const { env } = getCloudflareContext();
-  dbInstance = drizzle(env.DB, { schema });
-  return dbInstance;
-}
+/**
+ * Lazily initializes the Drizzle ORM connection.
+ * Bypasses Next.js static build evaluation by fetching the D1 binding at runtime.
+ */
+export const getDb = async () => {
+  const { env } = await getCloudflareContext({ async: true });
+  return drizzle(env.DB);
+};
