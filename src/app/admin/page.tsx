@@ -1,10 +1,10 @@
-import { getDB } from "@/db";
+import { getDb } from "@/db";
 import { eq } from "drizzle-orm";
 import { withdrawals } from "@/db/schema"; // Now exists
 import { Button } from "@/components/ui/button";
 
 export default async function AdminDashboard() {
-  const db = getDB();
+  const db = await getDb();
   
   const pendingRequests = await db.select().from(withdrawals).where(eq(withdrawals.status, "pending"));
 
