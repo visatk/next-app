@@ -15,7 +15,7 @@ export function EzoicPlaceholder({ id, className }: EzoicPlaceholderProps) {
     if (!isRendered.current) {
       isRendered.current = true;
       runEzoic(() => {
-        // Dynamically define this specific placeholder if rendered after initial load
+        // TypeScript now knows about window.ezstandalone
         if (window.ezstandalone?.hasInit) {
            window.ezstandalone.define(id);
            window.ezstandalone.display();
