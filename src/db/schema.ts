@@ -62,7 +62,7 @@ export const questions = sqliteTable("question", {
   text: text("text").notNull(),
   options: text("options", { mode: "json" }).notNull(), // JSON string array
   correctAnswer: text("correctAnswer").notNull(),
-});db
+});
 
 export const wallets = sqliteTable("wallet", {
   id: text("id").primaryKey(),
