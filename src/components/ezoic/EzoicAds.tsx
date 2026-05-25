@@ -15,10 +15,10 @@ export function EzoicPlaceholder({ id, className }: EzoicPlaceholderProps) {
     if (!isRendered.current) {
       isRendered.current = true;
       runEzoic(() => {
-        // TypeScript now knows about window.ezstandalone
         if (window.ezstandalone?.hasInit) {
-           window.ezstandalone.define(id);
-           window.ezstandalone.display();
+           // Use optional chaining to satisfy strict TypeScript execution
+           window.ezstandalone.define?.(id);
+           window.ezstandalone.display?.();
         }
       });
     }
