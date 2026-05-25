@@ -6,6 +6,7 @@ declare global {
       hasInit: boolean;
       define: (id: number) => void;
       display: () => void;
+      enable: () => void; // Added missing method
     };
   }
 }
