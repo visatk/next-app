@@ -8,6 +8,8 @@ import { headers } from "next/headers";
 import { validateTurnstile } from "@/lib/security";
 import { randomUUID } from "crypto";
 
+const db = getDB();
+
 export async function processTransaction(
   amount: number, 
   type: string, 
