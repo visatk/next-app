@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { runEzoic } from '@/lib/ezoic';
 
-export function EzoicProvider() {
+export function EzoicProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -12,19 +12,21 @@ export function EzoicProvider() {
     runEzoic(() => {
       if (!window.ezstandalone?.hasInit) {
         // Initial Page Load
-        window.ezstandalone?.enable();
-        window.ezstandalone?.display();
+        window.ezstandalone?.enable?.();
+        window.ezstandalone?.display?.();
         if (window.ezstandalone) window.ezstandalone.hasInit = true;
       } else {
-        // SPA Route Change Navigation
-        window.ezstandalone?.destroyAll();
-        // Allow Next.js layout to settle before scanning for new placeholders
-        setTimeout(() => {
-          window.ezstandalone?.refresh();
-        }, 100);
+        // Subsequent Route Navigation
+        // Ensure you add ?.() to ANY other methods called here
+        window.ezstandalone?.destroyAll?.();
+        // If your Next.js docs implementation uses getPlaceholders or refresh, 
+        // they also need optional chaining:
+        // const placeholders = window.ezstandalone?.getPlaceholders?.();
+        // window.ezstandalone?.define?.(placeholders);
+        window.ezstandalone?.refresh?.();
       }
     });
   }, [pathname, searchParams]);
 
-  return null;
+  return <>{children}</>;
 }
